@@ -30,10 +30,33 @@ Développement d'une application mobile Flutter permettant de suivre l'activité
 ```
 lib/
 ├── main.dart  # Point d'entrée de l'application
-├── screens/   # Écrans principaux (home.dart, activity_screen.dart, nutrition_screen.dart)
-├── widgets/   # Widgets réutilisables (activity_card.dart, meal_card.dart)
-├── models/    # Modèles de données (activity.dart, meal.dart)
-├── services/  # Services d'interaction avec l'API (nutrition_api_service.dart)
+├── src/
+│   ├── activity_tracker
+│   │   ├── activity_details_view.dart
+│   │   ├── activity_list_view.dart
+│   │   └── model/
+│   │       └── activity.dart
+│   ├── calorie_calculator
+│   │   ├── calorie_calculator.dart
+│   │   ├── calorie_calculator_view.dart
+│   │   └── model/
+│   │       └── calorie_data.dart
+│   ├── localization
+│   │   ├── app_en.arb
+│   │   └── app_fr.arb
+│   ├── nutrition_tracker
+│   │   ├── meal_details_view.dart
+│   │   ├── meal_list_view.dart
+│   │   └── model/
+│   │       └── meal.dart
+│   ├── services
+│   │   └── nutrition_api_service.dart
+│   └── settings
+│       ├── model/
+│       │   └── settings.dart
+│       ├── settings_controller.dart
+│       ├── settings_service.dart
+│       └── settings_view.dart
 assets/        # Images, icônes, polices
 pubspec.yaml   # Dépendances du projet
 ```
@@ -52,27 +75,28 @@ pubspec.yaml   # Dépendances du projet
 - Choix de l'API nutritionnelle.
 
 ### 2️⃣ Développement de l'interface utilisateur
-- Création des écrans principaux (accueil, suivi des activités, suivi des repas).
-- Développement des widgets réutilisables.
+- Création des écrans principaux (accueil, suivi des activités, suivi des repas, calculateur de calories).
+- Développement des widgets réutilisables (cartes d'activités, de repas, etc.).
 
 ### 3️⃣ Intégration des fonctionnalités
-- Ajout du suivi des activités physiques (calories, pas).
+- Ajout du suivi des activités physiques (calcul des calories brûlées et comptage des pas).
 - Intégration du suivi nutritionnel avec l'API choisie.
-- Enregistrement des données en local.
+- Calcul du métabolisme de base et recommandation calorique en fonction des objectifs (prise de masse, perte de poids, etc.).
+- Enregistrement des données en local pour un accès hors-ligne.
 
 ### 4️⃣ Test et débogage
-- Tests unitaires et fonctionnels.
-- Optimisation des performances.
+- Tests unitaires pour garantir le bon fonctionnement des calculs et de l'API.
+- Tests d'intégration pour vérifier l'interaction entre les différentes parties de l'application.
+- Optimisation des performances, en particulier pour le calcul des calories et le suivi en temps réel.
 
 ### 5️⃣ Finalisation et déploiement
-- Ajout éventuel de l'authentification.
 - Préparation au déploiement sur Google Play / App Store.
+- Ajout d'une fonction de sauvegarde des données (ex : préférences utilisateur, historique d'activités).
+- Améliorations de l'interface utilisateur et expérience (UX).
 
 ## 🔜 Prochaines étapes
-- Configurer l'environnement Flutter.
+- Configurer l'environnement Flutter et les dépendances.
 - Créer la structure de base et les écrans principaux.
-- Ajouter le suivi des activités (pas, calories brûlées).
+- Ajouter le suivi des activités physiques et la gestion des calories brûlées.
 - Intégrer l'API nutritionnelle pour récupérer les informations des repas.
-
----
-📌 **Ce projet est en cours de développement. Toute contribution est la bienvenue !** 🚀
+- Développer le calculateur de calories et l'intégration des recommandations personnalisées.

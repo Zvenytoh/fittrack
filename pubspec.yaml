@@ -18,7 +18,13 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  intl_utils: ^2.4.0
 
+flutter_intl:
+  enabled: true
+  arb_dir: lib/src/localization  # Répertoire où se trouvent tes fichiers .arb
+  template_arbs:
+    - lib/src/localization/app_en.arb  # Fichier de base
   flutter_lints: ^5.0.0
 
 flutter:
