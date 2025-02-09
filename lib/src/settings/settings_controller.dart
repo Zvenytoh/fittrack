@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'settings_service.dart';
 
 /// A class that many Widgets can interact with to read user settings, update
@@ -9,42 +8,46 @@ import 'settings_service.dart';
 /// uses the SettingsService to store and retrieve user settings.
 class SettingsController with ChangeNotifier {
   SettingsController(this._settingsService);
-
-  // Make SettingsService a private variable so it is not used directly.
-  final SettingsService _settingsService;
-
-  // Make ThemeMode a private variable so it is not updated directly without
-  // also persisting the changes with the SettingsService.
+  
+  late String _languageCode;
   late ThemeMode _themeMode;
 
-  // Allow Widgets to read the user's preferred ThemeMode.
-  ThemeMode get themeMode => _themeMode;
+  // Services
+  final SettingsService _settingsService;
 
-  /// Load the user's settings from the SettingsService. It may load from a
-  /// local database or the internet. The controller only knows it can load the
-  /// settings from the service.
+  // Read-only properties
+  ThemeMode get themeMode => _themeMode;
+  String get languageCode => _languageCode;
+
+  /// Returns the Locale based on the current language code
+  Locale get locale => Locale(_languageCode);
+
+  /// Load the user's settings from the SettingsService.
   Future<void> loadSettings() async {
     _themeMode = await _settingsService.themeMode();
-
-    // Important! Inform listeners a change has occurred.
-    notifyListeners();
+    _languageCode = await _settingsService.languageCode();  // Charger la langue depuis le SettingsService
+    notifyListeners();  // Notifie les widgets qui écoutent ce controller
   }
 
   /// Update and persist the ThemeMode based on the user's selection.
   Future<void> updateThemeMode(ThemeMode? newThemeMode) async {
     if (newThemeMode == null) return;
 
-    // Do not perform any work if new and old ThemeMode are identical
-    if (newThemeMode == _themeMode) return;
+    if (newThemeMode == _themeMode) return;  // Pas de changement si la valeur est identique
 
-    // Otherwise, store the new ThemeMode in memory
     _themeMode = newThemeMode;
+    notifyListeners();  // Notify listeners about the change
 
-    // Important! Inform listeners a change has occurred.
-    notifyListeners();
+    await _settingsService.updateThemeMode(newThemeMode);  // Sauvegarder dans le SettingsService
+  }
 
-    // Persist the changes to a local database or the internet using the
-    // SettingService.
-    await _settingsService.updateThemeMode(newThemeMode);
+  /// Update and persist the language based on the user's selection.
+  Future<void> updateLanguage(String newLanguageCode) async {
+    if (newLanguageCode == _languageCode) return;  // Si la langue est déjà celle sélectionnée, ne rien faire
+
+    _languageCode = newLanguageCode;
+    notifyListeners();  // Notifie les widgets pour qu'ils soient reconstruits avec la nouvelle langue
+
+    await _settingsService.updateLanguage(newLanguageCode);  // Sauvegarder la langue dans le SettingsService
   }
 }

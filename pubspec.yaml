@@ -14,18 +14,22 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  shared_preferences: ^2.0.15
+  intl: ^0.19.0
+  country_flags: ^3.2.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   intl_utils: ^2.4.0
-  flutter_lints: ^5.0.0  # ici dans dev_dependencies
+  flutter_lints: ^5.0.0
 
 flutter_intl:
   enabled: true
   arb_dir: lib/src/localization  # Répertoire où se trouvent tes fichiers .arb
   template_arbs:
-    - lib/src/localization/app_en.arb  # Fichier de base
+    - lib/src/localization/intl_en.arb  # Fichier de base
+  output_dir: lib/src/generated  # Dossier où seront générés les fichiers Dart
 
 flutter:
   uses-material-design: true
@@ -36,3 +40,14 @@ flutter:
   assets:
     # Add assets from the images directory to the application.
     - assets/images/
+
+# Localization settings moved here
+flutter_localizations:
+  delegates:
+    - flutter_localizations:
+        sdk: flutter
+    - app_localizations:
+        path: lib/src/generated  # Chemin vers les fichiers générés
+  supportedLocales:
+    - en
+    - fr  # Ajout de la langue française ici

@@ -1,0 +1,45 @@
+{
+  "@@locale": "fr",
+  "settingsTitle": "Paramètres",
+  "themeLabel": "Thème",
+  "languageLabel": "Langue",
+  "systemTheme": "Système",
+  "lightTheme": "Clair",
+  "darkTheme": "Sombre",
+  "appTitle": "FitTrack",
+
+  "@settingsTitle": {
+    "description": "Titre de la page des paramètres",
+    "type": "text"
+  },
+
+  "@themeLabel": {
+    "description": "Étiquette pour la sélection du thème dans les paramètres",
+    "type": "text"
+  },
+
+  "@languageLabel": {
+    "description": "Étiquette pour la sélection de la langue dans les paramètres",
+    "type": "text"
+  },
+
+  "@systemTheme": {
+    "description": "Option pour le thème par défaut du système",
+    "type": "text"
+  },
+
+  "@lightTheme": {
+    "description": "Option pour le thème clair",
+    "type": "text"
+  },
+
+  "@darkTheme": {
+    "description": "Option pour le thème sombre",
+    "type": "text"
+  },
+
+  "@appTitle": {
+    "description": "Le titre de l'application",
+    "type": "text"
+  }
+}
