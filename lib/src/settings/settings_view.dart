@@ -23,7 +23,11 @@ class SettingsView extends StatelessWidget {
             // Theme Dropdown Button (déjà existant)
             DropdownButton<ThemeMode>(
               value: controller.themeMode,
-              onChanged: controller.updateThemeMode,
+              onChanged: (ThemeMode? newTheme) {
+                if (newTheme != null) {
+                  controller.updateThemeMode(newTheme);
+                }
+              },
               items: [
                 DropdownMenuItem(
                   value: ThemeMode.system,
@@ -39,7 +43,7 @@ class SettingsView extends StatelessWidget {
                 ),
               ],
             ),
-            
+
             // Language Dropdown Button avec icônes de drapeaux
             DropdownButton<String>(
               value: controller.languageCode,

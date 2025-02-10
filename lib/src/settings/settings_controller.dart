@@ -1,53 +1,51 @@
 import 'package:flutter/material.dart';
 import 'settings_service.dart';
+import 'model/settings.dart'; // Import du modèle Settings
 
-/// A class that many Widgets can interact with to read user settings, update
-/// user settings, or listen to user settings changes.
-///
-/// Controllers glue Data Services to Flutter Widgets. The SettingsController
-/// uses the SettingsService to store and retrieve user settings.
+/// Un contrôleur qui permet aux widgets d’accéder aux paramètres utilisateur
+/// et de les mettre à jour en utilisant le `SettingsService`.
 class SettingsController with ChangeNotifier {
   SettingsController(this._settingsService);
-  
-  late String _languageCode;
-  late ThemeMode _themeMode;
 
-  // Services
+  // Service qui gère la persistance
   final SettingsService _settingsService;
 
-  // Read-only properties
-  ThemeMode get themeMode => _themeMode;
-  String get languageCode => _languageCode;
+  // Stocke tous les paramètres dans un seul objet Settings
+  late Settings _settings;
 
-  /// Returns the Locale based on the current language code
-  Locale get locale => Locale(_languageCode);
+  // Getters pour accéder aux paramètres
+  ThemeMode get themeMode => _settings.themeMode;
+  String get languageCode => _settings.languageCode;
+  Locale get locale => Locale(_settings.languageCode);
 
-  /// Load the user's settings from the SettingsService.
+  /// Charge tous les paramètres utilisateur depuis le `SettingsService`.
   Future<void> loadSettings() async {
-    _themeMode = await _settingsService.themeMode();
-    _languageCode = await _settingsService.languageCode();  // Charger la langue depuis le SettingsService
-    notifyListeners();  // Notifie les widgets qui écoutent ce controller
+    _settings = await _settingsService.loadSettings();
+    
+    debugPrint('Settings Loaded: ThemeMode=${_settings.themeMode}, Language=${_settings.languageCode}');
+
+    notifyListeners(); // Notifie les widgets qui écoutent ce contrôleur
   }
 
-  /// Update and persist the ThemeMode based on the user's selection.
-  Future<void> updateThemeMode(ThemeMode? newThemeMode) async {
-    if (newThemeMode == null) return;
+  /// Met à jour et sauvegarde le mode de thème sélectionné par l'utilisateur.
+  Future<void> updateThemeMode(ThemeMode newThemeMode) async {
+    if (newThemeMode == _settings.themeMode) return; // Évite les mises à jour inutiles
 
-    if (newThemeMode == _themeMode) return;  // Pas de changement si la valeur est identique
+    _settings = _settings.copyWith(themeMode: newThemeMode);
+    debugPrint('Theme updated: ${_settings.themeMode}');
 
-    _themeMode = newThemeMode;
-    notifyListeners();  // Notify listeners about the change
-
-    await _settingsService.updateThemeMode(newThemeMode);  // Sauvegarder dans le SettingsService
+    notifyListeners();
+    await _settingsService.saveSettings(_settings);
   }
 
-  /// Update and persist the language based on the user's selection.
+  /// Met à jour et sauvegarde la langue sélectionnée par l'utilisateur.
   Future<void> updateLanguage(String newLanguageCode) async {
-    if (newLanguageCode == _languageCode) return;  // Si la langue est déjà celle sélectionnée, ne rien faire
+    if (newLanguageCode == _settings.languageCode) return; // Évite les mises à jour inutiles
 
-    _languageCode = newLanguageCode;
-    notifyListeners();  // Notifie les widgets pour qu'ils soient reconstruits avec la nouvelle langue
+    _settings = _settings.copyWith(languageCode: newLanguageCode);
+    debugPrint('Language updated: ${_settings.languageCode}');
 
-    await _settingsService.updateLanguage(newLanguageCode);  // Sauvegarder la langue dans le SettingsService
+    notifyListeners();
+    await _settingsService.saveSettings(_settings);
   }
 }
